@@ -33,7 +33,7 @@ const CardResult = () => {
     //     </div>
     //   ) : 
       cards.map((card) => (
-          <div class="anime__card--container">
+          <div class="anime__card--container" key={card.id}>
             <figure class="anime__poster--wrapper">
               <img
                 src="${anime.images.jpg.image_url}"
