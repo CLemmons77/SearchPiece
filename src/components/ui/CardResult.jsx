@@ -1,15 +1,15 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import Spinner from '../../assets/spinner-solid.svg'
+import Spinner from "../../assets/spinner-solid.svg";
 
 const CardResult = () => {
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const fetchCards = async () => {
+  const fetchCards = async (game_id) => {
     setLoading(true);
     const { data } = await axios.get(
-      `https://api.cardtrader.com/api/v2/games`,
+      `https://api.cardtrader.com/api/v2/blueprints?game_id=${game_id === 8}`,
       {
         headers: {
           Authorization:
@@ -17,6 +17,7 @@ const CardResult = () => {
         },
       }
     );
+    console.log(data);
     setCards(data);
     setLoading(false);
   };
@@ -26,39 +27,43 @@ const CardResult = () => {
   }, []);
 
   return (
-    <div class="anime__card">
-      {
-      loading ? (
-        <div class="result">
-          <img className="fa-spinner results__loading--spinner" src={Spinner} />
-        </div>
-      ) : 
-      cards.map((card) => (
-          <div class="anime__card--container" key={card.id}>
-            <figure class="anime__poster--wrapper">
+    <section id="results">
+      <div className="anime__cards">
+        {loading ? (
+          <div className="result">
+            <figure>
               <img
-                src="${card.image}"
-                alt=""
-                class="anime__poster"
+                className="fa-spinner results__loading--spinner"
+                src={Spinner}
               />
             </figure>
-            <h3 class="anime__title"></h3>
-            <p>
-              <b>Cardset:</b>
-              {card.cardset}
-            </p>
-            <p>
-              <b>Color:</b>
-              {card.color}
-            </p>
-            <p>
-              <b>Ability:</b>
-              {card.ability}
-            </p>
           </div>
-        ))
-      }
-    </div>
+        ) : (
+          cards.map((card) => (
+            <div class="anime__card" key={card.id}>
+              <div class="anime__card--container">
+                <figure class="anime__poster--wrapper">
+                  <img src="${card.image}" alt="" class="anime__poster" />
+                </figure>
+                <h3 class="anime__title"></h3>
+                <p>
+                  <b>Cardset:</b>
+                  {card.cardset}
+                </p>
+                <p>
+                  <b>Color:</b>
+                  {card.color}
+                </p>
+                <p>
+                  <b>Ability:</b>
+                  {card.ability}
+                </p>
+              </div>
+            </div>
+          ))
+        )}
+      </div>
+    </section>
   );
 };
 

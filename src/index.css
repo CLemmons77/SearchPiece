@@ -603,7 +603,18 @@ LIBRARY
 }
 
 .results__loading--spinner {
-  display: none !important;
+  width: 100%;
+  height: 100%;
+  max-width: 180px;
+  margin-top: 80px;
+  margin-bottom: 80px
+}
+
+.result {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 80vh;
 }
 
 .results__loading .results__loading--spinner {
