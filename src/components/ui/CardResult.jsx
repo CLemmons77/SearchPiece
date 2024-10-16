@@ -5,10 +5,10 @@ const CardResult = () => {
   const [cards, setCards] = useState([]);
   const [loading, setLoading] = useState(false);
 
-  const fetchCards = async () => {
+  const fetchCards = async (id) => {
     setLoading(true);
     const { data } = await axios.get(
-      "https://api.cardtrader.com/api/v2/games/",
+      `https://api.cardtrader.com/api/v2/games?id=${id}`,
       {
         headers: {
           Authorization:
@@ -16,6 +16,7 @@ const CardResult = () => {
         },
       }
     );
+    console.log(data);
     setCards(data);
     setLoading(false);
   };
@@ -26,12 +27,12 @@ const CardResult = () => {
 
   return (
     <div class="anime__card">
-      {
-    //   loading ? (
-    //     <div class="result">
-    //       <img class="fas fa-spinner results__loading--spinner" />
-    //     </div>
-    //   ) : 
+      {/* {
+      loading ? (
+        <div class="result">
+          <img class="fas fa-spinner results__loading--spinner" />
+        </div>
+      ) : 
       cards.map((card) => (
           <div class="anime__card--container" key={card.id}>
             <figure class="anime__poster--wrapper">
@@ -70,7 +71,7 @@ const CardResult = () => {
             </p>
           </div>
         ))
-      }
+      } */}
     </div>
   );
 };
