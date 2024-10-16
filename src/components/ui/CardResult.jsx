@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import Spinner from '../../assets/spinner-solid.svg'
 
 const CardResult = () => {
   const [cards, setCards] = useState([]);
@@ -30,14 +31,14 @@ const CardResult = () => {
       {/* {
       loading ? (
         <div class="result">
-          <img class="fas fa-spinner results__loading--spinner" />
+          <img className="fa-spinner results__loading--spinner" src={Spinner} />
         </div>
       ) : 
       cards.map((card) => (
           <div class="anime__card--container" key={card.id}>
             <figure class="anime__poster--wrapper">
               <img
-                src="${anime.images.jpg.image_url}"
+                src="${card.image}"
                 alt=""
                 class="anime__poster"
               />
