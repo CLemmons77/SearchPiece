@@ -9,7 +9,7 @@ const CardResult = () => {
   const fetchCards = async (game_id) => {
     setLoading(true);
     const { data } = await axios.get(
-      `https://api.cardtrader.com/api/v2/blueprints?game_id=${game_id === 8}`,
+      `https://api.cardtrader.com/api/v2/blueprints?game_id=8`,
       {
         headers: {
           Authorization:
@@ -40,12 +40,12 @@ const CardResult = () => {
           </div>
         ) : (
           cards.map((card) => (
-            <div class="anime__card" key={card.id}>
-              <div class="anime__card--container">
-                <figure class="anime__poster--wrapper">
-                  <img src="${card.image}" alt="" class="anime__poster" />
+            <div className="anime__card" key={card.id}>
+              <div className="anime__card--container">
+                <figure className="anime__poster--wrapper">
+                  <img src={card.image} alt="" className="anime__poster" />
                 </figure>
-                <h3 class="anime__title"></h3>
+                <h3 className="anime__title">{card.name}</h3>
                 <p>
                   <b>Cardset:</b>
                   {card.cardset}
