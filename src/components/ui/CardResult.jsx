@@ -9,7 +9,7 @@ const CardResult = () => {
   const fetchCards = async (game_id) => {
     setLoading(true);
     const { data } = await axios.get(
-      `https://api.cardtrader.com/api/v2/blueprints?game_id=8`,
+      `https://api.cardtrader.com/api/v2/categories?game_id=15`,
       {
         headers: {
           Authorization:
@@ -43,20 +43,28 @@ const CardResult = () => {
             <div className="anime__card" key={card.id}>
               <div className="anime__card--container">
                 <figure className="anime__poster--wrapper">
-                  <img src={card.image} alt="" className="anime__poster" />
+                  <img src={'https://en.onepiece-cardgame.com/images/cardlist/card/OP02-013_p3.png?241004'} alt="" className="anime__poster" />
                 </figure>
-                <h3 className="anime__title">{card.name}</h3>
+                <h3 className="anime__title">Portgas.D.Ace</h3>
                 <p>
-                  <b>Cardset:</b>
-                  {card.cardset}
+                  <b>Cardset:</b>{' '}
+                  TWO LEGENDS- [OP-08]
                 </p>
                 <p>
-                  <b>Color:</b>
-                  {card.color}
+                  <b>Color:</b>{' '}
+                  Red
                 </p>
                 <p>
-                  <b>Ability:</b>
-                  {card.ability}
+                  <b>Cost:</b>{' '}
+                  7
+                </p>
+                <p>
+                  <b>Type:</b>{' '}
+                  Whitebeard Pirates
+                </p>
+                <p>
+                  <b>Ability:</b>{' '}
+                  [On Play] Give up to 2 of your opponent's Characters −3000 power during this turn. Then, if your Leader's type includes \"Whitebeard Pirates\", this Character gains [Rush] during this turn.
                 </p>
               </div>
             </div>
