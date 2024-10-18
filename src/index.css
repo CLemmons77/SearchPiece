@@ -719,6 +719,11 @@ LIBRARY
   background-color: #242424;
 }
 
+.card__info--ability{
+  width: 100%;
+  max-width: 400px;
+}
+
 h3 {
   margin: 4px 0;
 
