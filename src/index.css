@@ -696,7 +696,7 @@ LIBRARY
   max-width: 360px;
   overflow: hidden;
   border-radius: 20px;
-  box-shadow: 16px 16px 24px 24px rgb(0, 0, 0, 0.3);
+  box-shadow: 16px 16px 24px 24px rgb(0, 0, 0, 0.25);
 }
 
 .card__info--text {
@@ -710,7 +710,13 @@ LIBRARY
   padding: 20px;
   border: 2px solid black;
   border-radius: 20px;
-  box-shadow: 16px 16px 24px 24px rgb(0, 0, 0, 0.3);
+  box-shadow: 16px 16px 24px 24px rgb(0, 0, 0, 0.2);
+}
+
+.card__back--btn {
+  margin-bottom: 20px;
+  box-shadow: 16px 16px 24px 24px rgb(0, 0, 0, 0.1);
+  background-color: #242424;
 }
 
 h3 {
