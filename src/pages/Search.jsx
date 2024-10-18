@@ -4,39 +4,54 @@ import Spinner from "../assets/spinner-solid.svg";
 import { cards } from "../data";
 
 const Search = () => {
-  const [cardList, setCardList] = useState(cards);
-  const [loading, setLoading] = useState(false);
-  const [searchValue, setSearchValue] = useState("");
-
-  const searchCards = () => {
-    filterCards(searchValue);
-  };
-
-
-  const filterCards = (filter) => {
-    if (filter === "ALPHABET_ASCEND") {
-      setCardList(
-        cards.slice().sort((a, b) => a.cardName.localeCompare(b.cardName))
-      );
-    }
-    if (filter === "ALPHABET_DESCEND") {
-      setCardList(
-        cards.slice().sort((a, b) => b.cardName.localeCompare(a.cardName))
-      );
-    }
-    if (filter === "CARD_NUMBER") {
-      setCardList(
-        cards.slice().sort((a, b) => b.cardNumber.localeCompare(a.cardNumber))
-      );
-    }
-
-    setLoading(false);
-  };
-
-  useEffect(() => {
-    filterCards();
-    searchCards()
-  }, []);
+    const [cardList, setCardList] = useState(cards);
+    const [loading, setLoading] = useState(false);
+    const [searchValue, setSearchValue] = useState("");
+    const [sortValue, setSortValue] = useState("DEFAULT");
+  
+    const sortCards = (sortOption, cardsToSort) => {
+      let sortedCards = [...cardsToSort];
+      setLoading(true);
+      if (sortOption === "ALPHABET_ASCEND") {
+        sortedCards.sort((a, b) => a.cardName.localeCompare(b.cardName));
+      } else if (sortOption === "ALPHABET_DESCEND") {
+        sortedCards.sort((a, b) => b.cardName.localeCompare(a.cardName));
+      } else if (sortOption === "CARD_NUMBER") {
+        sortedCards.sort((a, b) => a.cardNumber.localeCompare(b.cardNumber));
+      }
+      setLoading(false);
+      return sortedCards;
+    };
+  
+    const searchCards = () => {
+      const searchStr = searchValue.toLowerCase();
+      let filteredCards = cards.filter((card) => {
+        setLoading(true);
+        if (card.cardName.toLowerCase().includes(searchStr)) return true;
+        if (Array.isArray(card.cardSets)) {
+          if (card.cardSets.some((set) => set.toLowerCase().includes(searchStr)))
+            return true;
+        } else {
+          if (card.cardSets.toLowerCase().includes(searchStr)) return true;
+        }
+        if (Array.isArray(card.colors)) {
+          if (
+            card.colors.some((color) => color.toLowerCase().includes(searchStr))
+          )
+            return true;
+        } else {
+          if (card.colors.toLowerCase().includes(searchStr)) return true;
+        }
+        return false;
+      });
+      let sortedAndFilteredCards = sortCards(sortValue, filteredCards);
+      setCardList(sortedAndFilteredCards);
+      setLoading(false);
+    };
+  
+    useEffect(() => {
+      searchCards();
+    }, [searchValue, sortValue]);
 
   return (
     <>
@@ -53,20 +68,16 @@ const Search = () => {
                   type="search"
                   placeholder="Search by name, cardset, or color"
                   id="search"
-                  value={searchValue}
-                  onSubmit={(e) => setSearchValue(e.target.value)}
-                  onKeyPress={(event) => {
-                    event.key === "Enter" && searchCards();
-                  }}
+                  onChange={(e) => setSearchValue(e.target.value)}
                 />
                 <button
                   className="library__search--btn btn__hover-effect"
-                  onClick={() => searchCards()}
+                  onClick={searchCards}
                 >
                   Search
                 </button>
               </div>
-              <select id="filter" onChange={(e) => filterCards(e.target.value)}>
+              <select id="filter" onChange={(e) => setSortValue(e.target.value)} value={sortValue}>
                 <option
                   className="filter__option"
                   value="DEFAULT"
@@ -100,7 +111,7 @@ const Search = () => {
                 </div>
               ) : (
                 cardList
-                  .slice(0, 15)
+                  .slice(0, 50)
                   .map((card) => <CardResult card={card} key={card.id} />)
               )}
             </div>
