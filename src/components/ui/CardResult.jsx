@@ -1,10 +1,12 @@
 import React from "react";
+import { useNavigate } from "react-router-dom";
 
 
 const CardResult = ({ card }) => {
+  let navigate = useNavigate();
 
   return (
-    <div className="anime__card" key={card.id}>
+    <div className="anime__card" key={card.imageName} onClick={() => navigate(`/${card.imageName}`)}>
       <div className="anime__card--container">
         <figure className="anime__poster--wrapper">
           <img src={card.imageUrl} alt="card image" className="anime__poster" />
