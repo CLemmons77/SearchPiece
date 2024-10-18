@@ -565,6 +565,7 @@ LIBRARY
   width: 25%;
   height: 480px;
   overflow: scroll;
+  cursor: pointer;
 }
 
 .anime__card--container {
