@@ -5,6 +5,7 @@ import { cards } from "../data";
 
 const Search = () => {
     const [cardList, setCardList] = useState(cards);
+    const [itemCount, setItemCount] = useState(24);
     const [loading, setLoading] = useState(false);
     const [searchValue, setSearchValue] = useState("");
     const [sortValue, setSortValue] = useState("DEFAULT");
@@ -115,6 +116,12 @@ const Search = () => {
                   .map((card) => <CardResult card={card} key={card.id} />)
               )}
             </div>
+            {itemCount !== 300 && <button
+                  className="library__search--btn btn__hover-effect"
+                  onClick={() => setItemCount(itemCount + 16)}
+                >
+                  See More
+                </button>}
           </section>
         </div>
       </section>
