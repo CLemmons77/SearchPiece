@@ -112,7 +112,7 @@ const Search = () => {
                 </div>
               ) : (
                 cardList
-                  .slice(0, 50)
+                  .slice(0, itemCount)
                   .map((card) => <CardResult card={card} key={card.id} />)
               )}
             </div>
