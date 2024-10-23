@@ -730,6 +730,13 @@ h3 {
 
 }
 
+.see__more {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+}
+
 /*
 
 SMALL PHONES, LARGE SMARTPHONES 

@@ -4,55 +4,55 @@ import Spinner from "../assets/spinner-solid.svg";
 import { cards } from "../data";
 
 const Search = () => {
-    const [cardList, setCardList] = useState(cards);
-    const [itemCount, setItemCount] = useState(24);
-    const [loading, setLoading] = useState(false);
-    const [searchValue, setSearchValue] = useState("");
-    const [sortValue, setSortValue] = useState("DEFAULT");
-  
-    const sortCards = (sortOption, cardsToSort) => {
-      let sortedCards = [...cardsToSort];
+  const [cardList, setCardList] = useState(cards);
+  const [itemCount, setItemCount] = useState(24);
+  const [loading, setLoading] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
+  const [sortValue, setSortValue] = useState("DEFAULT");
+
+  const sortCards = (sortOption, cardsToSort) => {
+    let sortedCards = [...cardsToSort];
+    setLoading(true);
+    if (sortOption === "ALPHABET_ASCEND") {
+      sortedCards.sort((a, b) => a.cardName.localeCompare(b.cardName));
+    } else if (sortOption === "ALPHABET_DESCEND") {
+      sortedCards.sort((a, b) => b.cardName.localeCompare(a.cardName));
+    } else if (sortOption === "CARD_NUMBER") {
+      sortedCards.sort((a, b) => a.cardNumber.localeCompare(b.cardNumber));
+    }
+    setLoading(false);
+    return sortedCards;
+  };
+
+  const searchCards = () => {
+    const searchStr = searchValue.toLowerCase();
+    let filteredCards = cards.filter((card) => {
       setLoading(true);
-      if (sortOption === "ALPHABET_ASCEND") {
-        sortedCards.sort((a, b) => a.cardName.localeCompare(b.cardName));
-      } else if (sortOption === "ALPHABET_DESCEND") {
-        sortedCards.sort((a, b) => b.cardName.localeCompare(a.cardName));
-      } else if (sortOption === "CARD_NUMBER") {
-        sortedCards.sort((a, b) => a.cardNumber.localeCompare(b.cardNumber));
+      if (card.cardName.toLowerCase().includes(searchStr)) return true;
+      if (Array.isArray(card.cardSets)) {
+        if (card.cardSets.some((set) => set.toLowerCase().includes(searchStr)))
+          return true;
+      } else {
+        if (card.cardSets.toLowerCase().includes(searchStr)) return true;
       }
-      setLoading(false);
-      return sortedCards;
-    };
-  
-    const searchCards = () => {
-      const searchStr = searchValue.toLowerCase();
-      let filteredCards = cards.filter((card) => {
-        setLoading(true);
-        if (card.cardName.toLowerCase().includes(searchStr)) return true;
-        if (Array.isArray(card.cardSets)) {
-          if (card.cardSets.some((set) => set.toLowerCase().includes(searchStr)))
-            return true;
-        } else {
-          if (card.cardSets.toLowerCase().includes(searchStr)) return true;
-        }
-        if (Array.isArray(card.colors)) {
-          if (
-            card.colors.some((color) => color.toLowerCase().includes(searchStr))
-          )
-            return true;
-        } else {
-          if (card.colors.toLowerCase().includes(searchStr)) return true;
-        }
-        return false;
-      });
-      let sortedAndFilteredCards = sortCards(sortValue, filteredCards);
-      setCardList(sortedAndFilteredCards);
-      setLoading(false);
-    };
-  
-    useEffect(() => {
-      searchCards();
-    }, [searchValue, sortValue]);
+      if (Array.isArray(card.colors)) {
+        if (
+          card.colors.some((color) => color.toLowerCase().includes(searchStr))
+        )
+          return true;
+      } else {
+        if (card.colors.toLowerCase().includes(searchStr)) return true;
+      }
+      return false;
+    });
+    let sortedAndFilteredCards = sortCards(sortValue, filteredCards);
+    setCardList(sortedAndFilteredCards);
+    setLoading(false);
+  };
+
+  useEffect(() => {
+    searchCards();
+  }, [searchValue, sortValue]);
 
   return (
     <>
@@ -78,7 +78,11 @@ const Search = () => {
                   Search
                 </button>
               </div>
-              <select id="filter" onChange={(e) => setSortValue(e.target.value)} value={sortValue}>
+              <select
+                id="filter"
+                onChange={(e) => setSortValue(e.target.value)}
+                value={sortValue}
+              >
                 <option
                   className="filter__option"
                   value="DEFAULT"
@@ -116,13 +120,16 @@ const Search = () => {
                   .map((card) => <CardResult card={card} key={card.id} />)
               )}
             </div>
-            {itemCount !== 300 && <button
+            {itemCount !== 300 && (
+              <div className="see__more">
+                <button
                   className="library__search--btn btn__hover-effect"
                   onClick={() => setItemCount(itemCount + 16)}
                 >
                   See More
-                </button>}
-                <div></div>
+                </button>
+              </div>
+            )}
           </section>
         </div>
       </section>
