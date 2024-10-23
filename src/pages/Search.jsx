@@ -122,6 +122,7 @@ const Search = () => {
                 >
                   See More
                 </button>}
+                <div></div>
           </section>
         </div>
       </section>
