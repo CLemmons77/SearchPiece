@@ -5,7 +5,7 @@ import axios from "axios";
 
 const CardInfo = () => {
   let navigate = useNavigate();
-  const { code } = useParams();
+  const { id } = useParams();
   const [cardData, setCardData] = useState("");
 
   const apiKey = process.env.REACT_APP_API_KEY;
