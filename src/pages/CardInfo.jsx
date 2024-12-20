@@ -1,56 +1,74 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { cards } from "../data";
 import { useNavigate, useParams } from "react-router-dom";
+import axios from "axios";
 
 const CardInfo = () => {
   let navigate = useNavigate();
-  const { imageName } = useParams();
+  const { code } = useParams();
+  const [cardData, setCardData] = useState("");
 
-  const card = cards.find((card) => card.imageName === imageName);
+  const apiKey = process.env.REACT_APP_API_KEY;
+
+  const fetchCardInfo = async () => {
+    const { data } = await axios.get("https://apitcg.com/api/one-piece/cards", {
+      headers: {
+        Authorization: `x-api-key ${apiKey}`,
+      },
+    });
+    setCardData(data);
+  };
+
+  useEffect(() => {
+    fetchCardInfo();
+  }, [])
 
   return (
     <section>
-      <div className="header__container" key={card.imageName}>
+      <div className="header__container" key={cardData.code}>
         <div className="header__text card__container--border">
-          <h1>{card.cardName}</h1>
-          <h2>{card.cardSets}</h2>
-          <h2>{card.cardNumber}</h2>
+          <h1>{cardData.name}</h1>
+          <h2>{cardData.set}</h2>
+          <h2>{cardData.cardNumber}</h2>
         </div>
         <div className="header__img--container">
           <figure className="card__img--wrapper">
-            <img src={card.imageUrl} alt="card image" className="card__img" />
+            <img src={cardData.images} alt="card image" className="card__img" />
           </figure>
         </div>
         <div className="card__info--text">
           <h3>
-            <b>Card Type:</b> {card.cardType}
+            <b>Card Type:</b> {cardData.type}
           </h3>
           <h3>
-            <b>Color:</b> {card.colors}
+            <b>Color:</b> {cardData.color}
           </h3>
           <h3>
-            <b>Rarity:</b> {card.rarity}
+            <b>Rarity:</b> {cardData.rarity}
           </h3>
           <h3>
-            <b>Life:</b> {card.life}
+            <b>Life:</b> {cardData.life}
           </h3>
           <h3>
-            <b>Attribute:</b> {card.attributes}
+            <b>Attribute:</b> {cardData.attribute}
           </h3>
           <h3>
-            <b>Cost:</b> {card.cost}
+            <b>Cost:</b> {cardData.cost}
           </h3>
           <h3>
-            <b>Power:</b> {card.power}
+            <b>Power:</b> {cardData.power}
           </h3>
           <h3>
-            <b>Counter:</b> {card.counter}
+            <b>Counter:</b> {cardData.counter}
           </h3>
           <h3>
-            <b>Type:</b> {card.types}
+            <b>Type:</b> {cardData.family}
           </h3>
           <h3 className="card__info--ability">
-            <b>Ability:</b> {card.effects}
+            <b>Ability:</b> {cardData.ability}
+          </h3>
+          <h3 className="card__info--ability">
+            <b>Trigger:</b> {cardData.trigger}
           </h3>
         </div>
       </div>
