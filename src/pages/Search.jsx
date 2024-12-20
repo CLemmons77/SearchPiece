@@ -5,22 +5,23 @@ import { cards } from "../data";
 import axios from "axios";
 
 const Search = () => {
-  const [cardList, setCardList] = useState(cards);
   const [itemCount, setItemCount] = useState(24);
   const [loading, setLoading] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [sortValue, setSortValue] = useState("DEFAULT");
-  const [cardData, setCardData] = useState("");
+  const [cardData, setCardData] = useState([]);
+  const [cardList, setCardList] = useState(cards);
   
 
   const apiKey = process.env.REACT_APP_API_KEY;
 
   const fetchCardInfo = async () => {
-    const { data } = await axios.get("https://apitcg.com/api/one-piece/cards", {
+    const { data } = await axios.get(`https://apitcg.com/api/one-piece/cards?value=${searchValue}`, {
       headers: {
-        Authorization: `x-api-key ${apiKey}`,
+        Authorization: `x-api-key: ${apiKey}`,
       },
     });
+    console.log(data)
     setCardData(data);
   };
 
@@ -135,7 +136,7 @@ const Search = () => {
               ) : (
                 cardList
                   .slice(0, itemCount)
-                  .map((card) => <CardResult cardData={cardData} key={cardData.id} />)
+                  .map((cardData) => <CardResult cardData={cardData} key={cardData.id} />)
               )}
             </div>
             {itemCount !== 300 && (

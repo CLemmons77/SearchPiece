@@ -6,7 +6,7 @@ const CardResult = ({ cardData }) => {
   let navigate = useNavigate();
 
   return (
-    <div className="anime__card" key={cardData.id} onClick={() => navigate(`/${cardData.id}`)}>
+    <div className="anime__card" key={cardData.id} onClick={() => navigate(`cardInfo/${cardData.id}`)}>
       <div className="anime__card--container">
         <figure className="anime__poster--wrapper">
           <img src={cardData.images} alt="card image" className="anime__poster" />
