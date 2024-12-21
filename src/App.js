@@ -13,7 +13,7 @@ function App() {
         <Routes>
           <Route path="/" exact Component={Home} />
           <Route path="/search" Component={Search} />
-          <Route path="/cardinfo/:id" Component={CardInfo} />
+          <Route path="/:imageName" Component={CardInfo} />
         </Routes>
         <Footer />
       </div>
