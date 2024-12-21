@@ -2,42 +2,23 @@ import React, { useEffect, useState } from "react";
 import CardResult from "../components/ui/CardResult";
 import Spinner from "../assets/spinner-solid.svg";
 import { cards } from "../data";
-import axios from "axios";
 
 const Search = () => {
+  const [cardList, setCardList] = useState(cards);
   const [itemCount, setItemCount] = useState(24);
   const [loading, setLoading] = useState(false);
   const [searchValue, setSearchValue] = useState("");
   const [sortValue, setSortValue] = useState("DEFAULT");
-  const [cardData, setCardData] = useState([]);
-  const [cardList, setCardList] = useState(cards);
-  
-
-  const apiKey = process.env.REACT_APP_API_KEY;
-
-  const fetchCardInfo = async () => {
-    const { data } = await axios.get(`https://apitcg.com/api/one-piece/cards?value=${searchValue}`, {
-      headers: {
-        Authorization: `x-api-key: ${apiKey}`,
-      },
-    });
-    console.log(data)
-    setCardData(data);
-  };
-
-  useEffect(() => {
-    fetchCardInfo();
-  }, [])
 
   const sortCards = (sortOption, cardsToSort) => {
     let sortedCards = [...cardsToSort];
     setLoading(true);
     if (sortOption === "ALPHABET_ASCEND") {
-      sortedCards.sort((a, b) => a.name.localeCompare(b.name));
+      sortedCards.sort((a, b) => a.cardName.localeCompare(b.cardName));
     } else if (sortOption === "ALPHABET_DESCEND") {
-      sortedCards.sort((a, b) => b.name.localeCompare(a.name));
+      sortedCards.sort((a, b) => b.cardName.localeCompare(a.cardName));
     } else if (sortOption === "CARD_NUMBER") {
-      sortedCards.sort((a, b) => a.id.localeCompare(b.id));
+      sortedCards.sort((a, b) => a.cardNumber.localeCompare(b.cardNumber));
     }
     setLoading(false);
     return sortedCards;
@@ -45,22 +26,22 @@ const Search = () => {
 
   const searchCards = () => {
     const searchStr = searchValue.toLowerCase();
-    let filteredCards = cardData.filter((cardData) => {
+    let filteredCards = cards.filter((card) => {
       setLoading(true);
-      if (cardData.name.toLowerCase().includes(searchStr)) return true;
-      if (Array.isArray(cardData.set)) {
-        if (cardData.set.some((set) => set.toLowerCase().includes(searchStr)))
+      if (card.cardName.toLowerCase().includes(searchStr)) return true;
+      if (Array.isArray(card.cardSets)) {
+        if (card.cardSets.some((set) => set.toLowerCase().includes(searchStr)))
           return true;
       } else {
-        if (cardData.set.toLowerCase().includes(searchStr)) return true;
+        if (card.cardSets.toLowerCase().includes(searchStr)) return true;
       }
-      if (Array.isArray(cardData.color)) {
+      if (Array.isArray(card.colors)) {
         if (
-          cardData.color.some((color) => color.toLowerCase().includes(searchStr))
+          card.colors.some((color) => color.toLowerCase().includes(searchStr))
         )
           return true;
       } else {
-        if (cardData.color.toLowerCase().includes(searchStr)) return true;
+        if (card.colors.toLowerCase().includes(searchStr)) return true;
       }
       return false;
     });
@@ -136,7 +117,7 @@ const Search = () => {
               ) : (
                 cardList
                   .slice(0, itemCount)
-                  .map((cardData) => <CardResult cardData={cardData} key={cardData.id} />)
+                  .map((card) => <CardResult card={card} key={card.id} />)
               )}
             </div>
             {itemCount !== 300 && (
